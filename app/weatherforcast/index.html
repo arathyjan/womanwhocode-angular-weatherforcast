@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../lib/jquery/jquery-ui-1.10.3.custom.min.css">
+    <link rel="stylesheet" href="../styles/styles.css"/>
+    <title>Weather Forcast</title>
+</head>
+<body>
+
+<div ng-app="weatherForcast">
+    <div>
+        hello
+        <div ng-view ></div>
+    </div>
+
+    <script src="../components/jquery/jquery.js"></script>
+    <script src="../lib/jquery/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../components/angular/angular.js"></script>
+    <script src="../components/angular-cookies/angular-cookies.js"></script>
+
+    <!-- build:js consultation.min.js -->
+    <script src="app.js"></script>
+
+    <script src="modules/controllers/weatherForcastController.js"></script>
+    <script src="modules/services/weatherForcastService.js"></script>
+    <!-- endbuild -->
+</div>
+</body>
+</html>
