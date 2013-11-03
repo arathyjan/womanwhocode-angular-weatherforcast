@@ -8,9 +8,8 @@ angular.module('wwc.weatherForcast.controllers')
         var unit = 'c';
 
         $scope.getWeather = function () {
-            weatherService.getWeatherForLocation(woeidForBangalore, unit).success(function (result){
+            weatherService.getWeatherForLocation(woeidForBangalore, unit).success(function(result){
                 console.log(result);
             });
         }
-
     }]);
