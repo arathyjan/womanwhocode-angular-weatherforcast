@@ -1,5 +1,15 @@
 <div>
     <h3> Weather Forcast</h3>
-    This is the view page for weather forcast.
     <button ng-click="getWeather()">weather</button>
+    <div id="weather" ng-show=condition >
+        {{ title }} </br>
+        Date : {{ condition.date}} </br>
+        <img ng-src="{{image}}" /><br />
+        <b>Current Conditions:</b><br />
+        {{ condition.text }} , {{ condition.temp }} C<BR /> <BR />
+        <b>Forecast:</b><BR />
+        <div ng-repeat="forecast in forecasts">
+            {{ forecast.date }} , {{ forecast.day}}, HIGH: {{ forecast.high}}, Low: {{ forecast.low}}, {{ forecast.text}} </br>
+        </div>
+    </div>
 </div>
