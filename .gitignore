@@ -15,6 +15,5 @@ output
 .css/
 .tmp
 node_modules
-app/components
 dist
 app/**/*.css
