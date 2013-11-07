@@ -1,20 +1,15 @@
 'use strict';
 
-angular.module('wwc.weatherForcast.controllers')
-    .controller('WeatherController', ['$scope', '$location', 'WeatherService',
-    function ($scope, $location, weatherService) {
+angular.module('weatherForcast')
+    .controller('WeatherController', ['$scope',
+    function ($scope) {
 
-        $scope.condition = null;
-        var woeidForBangalore = 2295420;
-        var unit = 'c';
+        $scope.title = "The Weather App";
+        $scope.date = "Today";
+        $scope.condition = {temp : "15 C", text : "Its chilly"};
+        $scope.show = false;
 
-        $scope.getWeather = function () {
-            weatherService.getWeatherForLocation(woeidForBangalore, unit).success(function(result){
-                $scope.title = result.query.results.channel.item.title;
-                $scope.forecasts = result.query.results.channel.item.forecast;
-                $scope.condition = result.query.results.channel.item.condition;
-                $scope.image = "http://l.yimg.com/a/i/us/we/52/" + $scope.condition.code + ".gif";
-            });
+        $scope.getWeather = function(){
+        	$scope.show = true;
         }
-
-    }]);
+  }]);
