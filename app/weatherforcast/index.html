@@ -8,6 +8,8 @@
 
     <script src="app.js"></script>
     <script src="modules/controllers/weatherForcastController.js"></script>
+    <script src="modules/services/weatherForecastService.js"></script>
+
 
     <title>Weather Forcast</title>
 </head>
@@ -18,6 +20,7 @@
         <div id="weather">
         <h3>{{ title }}</h3> 
         <label>Enter city</label> <input type ="text" ng-model = "city"> 
+        <label>Enter country</label> <input type ="text" ng-model = "country"> 
         <button ng-click="getWeather()">weather</button> </br>
         <div ng-show = "show">
             <b>Current Conditions for {{city}}:</b><br />
