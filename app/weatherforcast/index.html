@@ -17,9 +17,20 @@
 </head>
 <body>
    <div ng-app="weatherForcast">
-<div>
-        <div ng-view id="weatherforcast"></div>
+        <div ng-controller="WeatherController">
+        <h1> Weather Forcast</h1>
+        <div id="weather">
+        <h3>{{ title }}</h3> 
+        <label>Enter city</label> <input type ="text" ng-model = "city"> 
+        <button ng-click="getWeather()">weather</button> </br>
+        <div ng-show = "show">
+            <b>Current Conditions for {{city}}:</b><br />
+        <label> Date : {{ date}} </label>
+
+        {{ condition.text }} , {{ condition.temp }} C <BR /> <BR />
+        </div>
     </div>
+</div>
 </div>
 
 </body>
