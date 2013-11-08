@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="../lib/jquery/jquery-ui-1.10.3.custom.min.css">
     <link rel="stylesheet" href="../styles/styles.css"/>
 
+    <script src="../components/jquery/jquery.js"></script>
+    <script src="../lib/jquery/jquery-ui-1.10.3.custom.min.js"></script>
     <script src="../components/angular/angular.js"></script>
-
     <script src="app.js"></script>
     <script src="modules/controllers/weatherForcastController.js"></script>
     <script src="modules/services/weatherForecastService.js"></script>
-
 
     <title>Weather Forcast</title>
 </head>
@@ -18,9 +19,10 @@
         <div ng-controller="WeatherController">
         <h1> Weather Forcast</h1>
         <div id="weather">
+
         <div ng-hide="show">
             <h3>The Weather App</h3> 
-            <label>Enter city</label> <input type ="text" ng-model = "city"> 
+            <label>Enter city</label> <input type ="text" ng-model = "city" my-autocomplete> 
             <label>Enter country</label> <input type ="text" ng-model = "country"> 
             <button ng-click="getWeather()">weather</button> </br>
         </div>
@@ -30,22 +32,18 @@
             <img ng-src="{{condition.image}}" /><br />
             <b>Current Conditions:</b><br />
             {{ condition.text }} , {{ condition.temp }} C<BR /> <BR />
+            <label>Search : </label> <input type="input" ng-model="search"><BR />
             <b>Forecast:</b><BR />
             <ul>
-            <li ng-repeat="forecast in forecasts">
-                {{ forecast.date }} ({{ forecast.day}}) - HIGH: {{ forecast.high}}&degC, Low: {{ forecast.low}}&degC
-                <div class="italic">
-                    {{ forecast.text}}
-                </div>
+            <li ng-repeat="forecast in forecasts | filter : search">
+                <div forecastdirective></div>
             </li>
             <ul>
             <div class="button">
                 <button ng-click="back()">back</button>
             </div>
+
         </div>
     </div>
-</div>
-</div>
-
 </body>
 </html>

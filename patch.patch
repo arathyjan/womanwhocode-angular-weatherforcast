@@ -1,0 +1,104 @@
+diff --git a/app/weatherforcast/index.html b/app/weatherforcast/index.html
+index 56d9fc1..f27f9e0 100644
+--- a/app/weatherforcast/index.html
++++ b/app/weatherforcast/index.html
+@@ -2,15 +2,16 @@
+ <html lang="en">
+ <head>
+     <meta charset="utf-8">
++    <link rel="stylesheet" href="../lib/jquery/jquery-ui-1.10.3.custom.min.css">
+     <link rel="stylesheet" href="../styles/styles.css"/>
+ 
++    <script src="../components/jquery/jquery.js"></script>
++    <script src="../lib/jquery/jquery-ui-1.10.3.custom.min.js"></script>
+     <script src="../components/angular/angular.js"></script>
+-
+     <script src="app.js"></script>
+     <script src="modules/controllers/weatherForcastController.js"></script>
+     <script src="modules/services/weatherForecastService.js"></script>
+ 
+-
+     <title>Weather Forcast</title>
+ </head>
+ <body>
+@@ -19,18 +20,17 @@
+         <h1> Weather Forcast</h1>
+         <div id="weather">
+         <h3>{{ title }}</h3> 
+-        <label>Enter city</label> <input type ="text" ng-model = "city"> 
++        <label>Enter city</label> <input type ="text" ng-model = "city" my-autocomplete> 
+         <label>Enter country</label> <input type ="text" ng-model = "country"> 
+         <button ng-click="getWeather()">weather</button> </br>
+         <div ng-show = "show">
+             <b>Current Conditions for {{city}}:</b><br />
+         <label> Date : {{ date}} </label>
+-
+-        {{ condition.text }} , {{ condition.temp }} C <BR /> <BR />
++        <label>Search : </label> <input type="input" ng-model="search">
++        <b>Forecast:</b><BR />
++        <div ng-repeat="forecast in forecasts | filter : search">
++            <div forecastdirective ></div>
+         </div>
+     </div>
+-</div>
+-</div>
+-
+ </body>
+ </html>
+\ No newline at end of file
+diff --git a/app/weatherforcast/modules/controllers/weatherForcastController.js b/app/weatherforcast/modules/controllers/weatherForcastController.js
+index 04d0214..ab18310 100644
+--- a/app/weatherforcast/modules/controllers/weatherForcastController.js
++++ b/app/weatherforcast/modules/controllers/weatherForcastController.js
+@@ -11,10 +11,47 @@ angular.module('weatherForcast')
+         $scope.getWeather = function(){
+         	var data = forecastService.getWeatherForcastFor($scope.city,$scope.country,"c").then(function(data){
+         		$scope.condition={temp:data.query.results.channel.item.condition.temp};
++                $scope.forecasts = data.query.results.channel.item.forecast;
+         		$scope.show = true;
+         	});
+-        	
+-
+-            
+         }}
+-]);
++])
++    .directive('forecastdirective', function () {
++         return {
++            restrict: 'A',
++            scope: true,
++            template: '<div> {{ forecast.date }} , {{ forecast.day}}, ' +
++            'HIGH: {{ forecast.high}}, Low: {{ forecast.low}}, {{ forecast.text}} ' +
++            ',Range : {{ forecast.range }} </br> </div>',
++            link: function(scope){
++                    scope.forecast.range = scope.forecast.high - scope.forecast.low;
++
++            }
++        }
++})
++    .directive('myAutocomplete', function ($parse) {
++        return function (scope, element, attrs) {
++            var ngModel = $parse(attrs.ngModel);
++            element.autocomplete({
++                autofocus: true,
++                minLength: 2,
++                source: function (request, response) {
++                    var results = ['Bangalore','Chennai','Pune','Gurgoan'];
++                        response(results);
++                },
++                select: function (event, ui) {
++                    scope.$apply(function (scope) {
++                        ngModel.assign(scope, ui.item.value);
++                        scope.$eval(attrs.ngChange);
++                    });
++                    return true;
++                },
++                search: function (event) {
++                    var searchTerm = $.trim(element.val());
++                    if (searchTerm.length < 2) {
++                        event.preventDefault();
++                    }
++                }
++            });
++        }
++    });
