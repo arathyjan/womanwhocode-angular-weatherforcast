@@ -3,26 +3,24 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="../lib/jquery/jquery-ui-1.10.3.custom.min.css">
-    <link rel="stylesheet" href="../styles/main.css"/>
-    <title>Weather Forcast</title>
-</head>
-<body>
-
-<div ng-app="weatherForcast">
-    <div>
-        <div ng-view id="weatherForcast"></div>
-    </div>
+    <link rel="stylesheet" href="../styles/styles.css"/>
 
     <script src="../components/jquery/jquery.js"></script>
     <script src="../lib/jquery/jquery-ui-1.10.3.custom.min.js"></script>
     <script src="../components/angular/angular.js"></script>
     <script src="../components/angular-cookies/angular-cookies.js"></script>
 
-    <!-- build:js consultation.min.js -->
     <script src="app.js"></script>
-
     <script src="modules/controllers/weatherForcastController.js"></script>
-    <!-- endbuild -->
+
+    <title>Weather Forcast</title>
+</head>
+<body>
+   <div ng-app="weatherForcast">
+<div>
+        <div ng-view id="weatherforcast"></div>
+    </div>
 </div>
+
 </body>
 </html>
