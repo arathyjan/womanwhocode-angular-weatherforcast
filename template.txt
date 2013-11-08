@@ -1,0 +1,36 @@
+
+Initial Template
+================
+
+<div ng-app>
+    <div ng-controller="WeatherController">
+    <h1> Weather Forcast</h1>
+    <div id="weather">
+        <h3>{{ title }}</h3> 
+        <label>Enter city</label><input type ="text" ng-model = "city"> 
+        <button ng-click="getWeather()">weather</button> </br>
+        <div ng-show = "show">
+            <b>Current Conditions for {{city}}:</b><br />
+        <label> Date : {{ date}} </label>
+
+        {{ condition.text }} , {{ condition.temp }} C <BR /> <BR />
+        </div>
+    </div>
+</div>
+</div>
+
+Weather Controller 
+==================
+
+  function WeatherController($scope){
+	$scope.title = "The Weather App";
+        $scope.date = "Today";
+        $scope.condition = {temp : "15 C", text : "Its chilly"};
+        $scope.show = false;
+        $scope.getWeather = function(){
+        	$scope.show = true;
+        }
+}
+
+
+
