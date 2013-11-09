@@ -19,13 +19,12 @@
         <div ng-controller="WeatherController">
         <h1> Weather Forcast</h1>
         <div id="weather">
-
-        <div ng-hide="show">
+        <form ng-hide="show">
             <h3>The Weather App</h3> 
-            <label>Enter city</label> <input type ="text" ng-model = "city" my-autocomplete> 
-            <label>Enter country</label> <input type ="text" ng-model = "country"> 
-            <button ng-click="getWeather()">weather</button> </br>
-        </div>
+            <label>Enter city</label> <input type ="text" ng-model = "city"> <br/>
+            <label>Enter country</label> <input type ="text" ng-model = "country"> <br/>
+            <button type="submit" ng-click="getWeather()">weather</button> </br>
+        </form>
         <div ng-show = "show">
             <h3>{{ title }} </h3></br>
             Date : {{ condition.date}} </br>
