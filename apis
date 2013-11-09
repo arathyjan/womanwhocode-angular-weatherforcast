@@ -1,0 +1,2 @@
+http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20geo.places%20where%20text%3D'bangalore,india'&format=json&callback=JSON_CALLBACK
+http://query.yahooapis.com/v1/public/yql?q=select item from weather.forecast where woeid='23424848' and u='c'&format=json&callback=JSON_CALLBACK
