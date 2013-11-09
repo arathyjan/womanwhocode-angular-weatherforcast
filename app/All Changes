@@ -1,0 +1,132 @@
+*****SERVICES*******
+
+'use strict';
+
+angular.module('weatherForcast').
+factory('weatherForecastService',['$http','$q',function($http,$q){
+	var fail = function(defer,msg){
+		alert(msg);
+		defer.reject();
+	};
+
+	var getWeatherForcastFor=function(city,country,unit){
+		var defer=$q.defer();
+		$http({
+			method:'JSONP',
+			url:"http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20geo.places%20where%20text%3D'"+city+","+country+"'&format=json&callback=JSON_CALLBACK"
+		}).success(
+			function(data,status,headers,config){
+				if(!data.query||!data.query.results||!data.query.results.place) 
+					fail(defer,"Please check the city and country and try again!!!");
+				var woeid;
+				if(data.query.results.place.length>0)
+					woeid=data.query.results.place[0].woeid;
+				else
+					woeid=data.query.results.place.woeid;
+				$http({
+           			method: 'JSONP',
+           			url: "http://query.yahooapis.com/v1/public/yql?q=select item from weather.forecast where woeid='"+woeid+ "' and u='" + unit + "'&format=json&callback=JSON_CALLBACK"
+            	}).success(function(data){
+        			if(data.query.results.channel.item.title=="City not found") 
+        				fail(defer,"Multiple cities possible");
+        			defer.resolve(data)
+        		})
+        		.error(function(){
+        			fail(defer,"Please check the city and country and try again!!!")
+        		});
+			})
+		.error(function(){
+			fail(defer,"Please check the city and country and try again!!!")
+		});
+		return defer.promise;
+	};
+
+	return {
+		getWeatherForcastFor:getWeatherForcastFor
+	}
+}])
+
+
+*******CONTROLLER********
+'use strict';
+
+angular.module('weatherForcast')
+.controller('WeatherController',['$scope','weatherForecastService',
+    function ($scope,forecastService){
+
+    
+        $scope.date = "Today";
+        $scope.condition = {temp : "15 C", text : "Its chilly"};
+        $scope.show = false;
+        $scope.getWeather = function(){
+        	var data = forecastService.getWeatherForcastFor($scope.city,$scope.country,"c")
+        		.then(function(data){
+        			$scope.condition=data.query.results.channel.item.condition||{};
+                    $scope.forecasts = data.query.results.channel.item.forecast||[];
+                    $scope.condition.image="http://l.yimg.com/a/i/us/we/52/" + $scope.condition.code + ".gif";
+                    $scope.title=data.query.results.channel.item.title;
+        			$scope.show = true;
+        	});
+        };
+        $scope.back=function(){
+            $scope.show=false;
+
+        }
+    }
+]);
+
+
+*********INDEX.HTML*********
+
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../styles/styles.css"/>
+
+    <script src="../components/angular/angular.js"></script>
+
+    <script src="app.js"></script>
+    <script src="modules/controllers/weatherForcastController.js"></script>
+    <script src="modules/services/weatherForecastService.js"></script>
+
+
+    <title>Weather Forcast</title>
+</head>
+<body>
+   <div ng-app="weatherForcast">
+        <div ng-controller="WeatherController">
+        <h1> Weather Forcast</h1>
+        <div id="weather">
+        <form ng-hide="show">
+            <h3>The Weather App</h3> 
+            <label>Enter city</label> <input type ="text" ng-model = "city"> <br/>
+            <label>Enter country</label> <input type ="text" ng-model = "country"> <br/>
+            <button type="submit" ng-click="getWeather()">weather</button> </br>
+        </form>
+        <div ng-show = "show">
+            <h3>{{ title }} </h3></br>
+            Date : {{ condition.date}} </br>
+            <img ng-src="{{condition.image}}" /><br />
+            <b>Current Conditions:</b><br />
+            {{ condition.text }} , {{ condition.temp }} C<BR /> <BR />
+            <b>Forecast:</b><BR />
+            <ul>
+            <li ng-repeat="forecast in forecasts">
+                {{ forecast.date }} ({{ forecast.day}}) - HIGH: {{ forecast.high}}&degC, Low: {{ forecast.low}}&degC
+                <div class="italic">
+                    {{ forecast.text}}
+                </div>
+            </li>
+            <ul>
+            <div class="button">
+                <button ng-click="back()">back</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+</body>
+</html>
