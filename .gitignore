@@ -16,4 +16,3 @@ output
 .tmp
 node_modules
 dist
-app/**/*.css
